@@ -4,21 +4,22 @@ import requests
 import plotly.express as px
 from datetime import datetime
 
-# --- Configuration ---
+# Page Configuration
 st.set_page_config(
     page_title="Malawi Climate Tracker",
-    page_icon="📊",
     layout="wide"
 )
 
-# --- Constants ---
+# City Coordinates
+
 CITIES = {
     "Lilongwe (Central)": {"lat": -13.9626, "lon": 33.7741},
     "Blantyre (South)": {"lat": -15.7861, "lon": 35.0058},
     "Mzuzu (North)": {"lat": -11.4656, "lon": 34.0207}
 }
 
-# --- Helper Functions ---
+# Data Fetching
+
 @st.cache_data
 def fetch_climate_data(lat, lon):
     """
@@ -55,12 +56,15 @@ def calculate_yearly_avg(df):
     """Calculates yearly average temperature."""
     return df.groupby("year")["temperature"].mean().reset_index()
 
-# --- Main Layout ---
+# Main Dashboard Layout
+
 st.title("Malawi Climate Tracker")
 st.markdown("""
 Interactive dashboard analyzing historical temperature trends across Malawi's 3 major cities from 1950 to present.  
 Built to visualize warming patterns and climate anomalies, communicating climate change impacts at a local level.
 """)
+
+st.info("📱 Mobile Users: For the best experience, please rotate your phone to landscape mode.")
 
 # Sidebar
 st.sidebar.header("Select Region")
@@ -73,18 +77,21 @@ with st.spinner(f"Analyzing climate data for {selected_city}..."):
         raw_df = fetch_climate_data(coords["lat"], coords["lon"])
         yearly_df = calculate_yearly_avg(raw_df)
         
-        # Calculate Metrics
+        # Key Climate Metrics
+
         baseline_temp = yearly_df[yearly_df["year"] < 1980]["temperature"].mean()
         recent_temp = yearly_df[yearly_df["year"] >= 2010]["temperature"].mean()
         warming = recent_temp - baseline_temp
         
-        # --- Metrics Row ---
+        # Display Metrics
+
         col1, col2, col3 = st.columns(3)
         col1.metric("Historic Average (1950-79)", f"{baseline_temp:.1f}°C")
         col2.metric("Modern Average (2010s)", f"{recent_temp:.1f}°C")
         col3.metric("Warming Impact", f"{warming:+.1f}°C", delta_color="inverse")
         
-        # --- Visualizations ---
+        # Temperature Visualizations
+
         
         # 1. Line Chart
         st.subheader(f"Temperature Trend: {selected_city}")
