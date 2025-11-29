@@ -7,7 +7,7 @@ from datetime import datetime
 # --- Configuration ---
 st.set_page_config(
     page_title="Malawi Climate Tracker",
-    page_icon="🇲🇼",
+    page_icon="📊",
     layout="wide"
 )
 
@@ -15,8 +15,7 @@ st.set_page_config(
 CITIES = {
     "Lilongwe (Central)": {"lat": -13.9626, "lon": 33.7741},
     "Blantyre (South)": {"lat": -15.7861, "lon": 35.0058},
-    "Mzuzu (North)": {"lat": -11.4656, "lon": 34.0207},
-    "Zomba (Old Capital)": {"lat": -15.3833, "lon": 35.3333}
+    "Mzuzu (North)": {"lat": -11.4656, "lon": 34.0207}
 }
 
 # --- Helper Functions ---
@@ -57,10 +56,10 @@ def calculate_yearly_avg(df):
     return df.groupby("year")["temperature"].mean().reset_index()
 
 # --- Main Layout ---
-st.title("🇲🇼 Malawi Climate Change Tracker")
+st.title("Malawi Climate Tracker")
 st.markdown("""
-**Monitoring temperature trends across Malawi's major cities.**
-This dashboard visualizes historical climate data from 1950 to present, highlighting the local impact of global warming.
+Interactive dashboard analyzing historical temperature trends across Malawi's 3 major cities from 1950 to present.  
+Built to visualize warming patterns and climate anomalies, communicating climate change impacts at a local level.
 """)
 
 # Sidebar
@@ -142,4 +141,4 @@ with st.spinner(f"Analyzing climate data for {selected_city}..."):
 
 # Footer
 st.markdown("---")
-st.caption("Data Source: Open-Meteo Historical Weather API | Developed by Jimmy JayJay")
+st.caption("Data Source: [Open-Meteo](https://open-meteo.com/) Historical Weather API | Built by [Jimmy Matewere](https://github.com/Jimmy-JayJay)")
